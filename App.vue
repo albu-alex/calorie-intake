@@ -3,13 +3,13 @@
     <StatusBar/>
     <Header title="Calorie Tracker"/>
     <text class="textColorPrimary">What did you eat today?</text>
+    <text class="textColorPrimary" v-if="isValidated">Input form cannot be empty</text>
     <view class="inputContainer">
       <text-input v-model="newFood" class="input"/>
     </view>
     <touchable-opacity class="addButton" :on-press="addFood">
       <text class="buttonText">Add</text>
     </touchable-opacity>
-    <text class="textColorPrimary" v-if="isValidated">Input form cannot be empty</text>
     <view class="foodList" v-for="food in foods" :key="food.id">
       <text class="textColorPrimary">{{food.name}}</text>
     </view>
