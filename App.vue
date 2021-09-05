@@ -11,14 +11,18 @@
       <text class="buttonText">Add</text>
     </touchable-opacity>
     <view class="foodList" v-for="food in foods" :key="food.id">
-      <text class="textColorPrimary">{{food.name}}</text>
+      <text class="foodListItem">{{food.name}}</text>
     </view>
+    <touchable-opacity class="resetButton" :on-press="resetFoodList">
+      <Footer/>
+    </touchable-opacity>
   </view>
 </template>
 
 <script>
 import StatusBar from "./components/StatusBar";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 export default {
   data(){
     return{
@@ -29,9 +33,13 @@ export default {
   },
   components: {
     StatusBar,
-    Header
+    Header,
+    Footer
   },
   methods: {
+    resetFoodList(){
+      this.foods = []
+    },
     addFood(){
       let newFood ={
         id: this.foods.length,
@@ -79,9 +87,22 @@ export default {
   width: 10%;
   align-self: center;
 }
+.resetButton{
+  position: absolute;
+  top: 87%;
+  width: 100%;
+}
 .buttonText{
   font-size: 18px;
   font-weight: 300;
   text-align: center;
+}
+.foodListItem{
+  font-size: 24px;
+  font-weight: 300;
+  margin-top: 20px;
+  color: #AAAAAA;
+  text-align: justify;
+  margin-left: 2%;
 }
 </style>
