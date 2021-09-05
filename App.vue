@@ -12,6 +12,7 @@
     </touchable-opacity>
     <view class="foodList" v-for="food in foods" :key="food.id">
       <text class="foodListItem">{{food.name}}</text>
+      <text-input v-model="newQuantity" class="quantityInput"/>
     </view>
     <touchable-opacity class="resetButton" :on-press="resetFoodList">
       <Footer/>
@@ -26,6 +27,7 @@ import Footer from "./components/Footer";
 export default {
   data(){
     return{
+      newQuantity : "1",
       newFood: "",
       shouldValidate: false,
       foods : []
@@ -38,12 +40,14 @@ export default {
   },
   methods: {
     resetFoodList(){
-      this.foods = []
+      this.foods = [];
+      this.newQuantity = "1";
     },
     addFood(){
       let newFood ={
         id: this.foods.length,
-        name: this.newFood
+        name: this.newFood,
+        quantity: 1
       }
       this.shouldValidate = !this.newFood;
       if(!this.shouldValidate)
@@ -74,6 +78,7 @@ export default {
   margin-top: 20px;
   flex-direction: row;
   justify-content: center;
+  align-self: flex-end;
 }
 .input{
   background-color: ghostwhite;
@@ -81,6 +86,15 @@ export default {
   border-color: black;
   font-size: 20px;
   font-weight: 300;
+}
+.quantityInput{
+  background-color: #252525;
+  color: #AAAAAA;
+  border-color: black;
+  font-size: 16px;
+  font-weight: 600;
+  max-width: 200px;
+  min-width: 50px;
 }
 .addButton{
   background-color: #AAAAAA;
@@ -104,5 +118,9 @@ export default {
   color: #AAAAAA;
   text-align: justify;
   margin-left: 2%;
+}
+.foodList{
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>
