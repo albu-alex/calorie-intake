@@ -12,9 +12,9 @@
     </touchable-opacity>
     <view class="foodList" v-for="food in foods" :key="food.id">
       <text class="foodListItem">{{food.name}}</text>
-      <text-input v-model="newQuantity" class="quantityInput"/>
+      <text-input v-model="newQuantities[food.id]" class="quantityInput"/>
     </view>
-    <text class="textColorPrimary" v-if="countCalories">{{calorieCounter}}</text>
+    <text class="textColorPrimary" v-if="countCalories">You have eaten this many calories:{{calorieCounter}}</text>
     <touchable-opacity class="resetButton" :on-press="resetFoodList">
       <Footer/>
     </touchable-opacity>
@@ -28,7 +28,7 @@ import Footer from "./components/Footer";
 export default {
   data(){
     return{
-      newQuantity : "1",
+      newQuantities : [],
       newFood: "",
       shouldValidate: false,
       foods : [],
@@ -47,24 +47,28 @@ export default {
   methods: {
     resetFoodList(){
       this.foods = [];
-      this.newQuantity = "1";
+      this.newQuantities = [];
       this.calorieCounter = 0;
     },
     addFood(){
       let newFood ={
         id: this.foods.length,
-        name: this.newFood,
-        calorieCount: this.caloriesPerFood[this.newFood] * this.newQuantity
+        name: this.newFood
       }
       this.shouldValidate = !this.newFood;
-      if(!this.shouldValidate)
+      if(!this.shouldValidate) {
         this.foods.push(newFood);
+        this.newQuantities.push("1");
+      }
       this.newFood = '';
     }
   },
   computed:{
     countCalories(){
-      this.foods.forEach(food => this.calorieCounter += food.calorieCount)
+      for(let i=0;i<this.newQuantities.length;i++){
+        let newCalorieCount = this.caloriesPerFood[this.foods[i].name] * this.newQuantities[i];
+        this.calorieCounter += newCalorieCount;
+      }
       return this.calorieCounter;
     },
     isValidated(){
