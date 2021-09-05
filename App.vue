@@ -14,6 +14,7 @@
       <text class="foodListItem">{{food.name}}</text>
       <text-input v-model="newQuantity" class="quantityInput"/>
     </view>
+    <text class="textColorPrimary" v-if="countCalories">{{calorieCounter}}</text>
     <touchable-opacity class="resetButton" :on-press="resetFoodList">
       <Footer/>
     </touchable-opacity>
@@ -30,7 +31,12 @@ export default {
       newQuantity : "1",
       newFood: "",
       shouldValidate: false,
-      foods : []
+      foods : [],
+      calorieCounter : 0,
+      caloriesPerFood:{
+        "Chicken breast" : 1.64,
+        "Chocolate": 5
+      }
     }
   },
   components: {
@@ -42,12 +48,13 @@ export default {
     resetFoodList(){
       this.foods = [];
       this.newQuantity = "1";
+      this.calorieCounter = 0;
     },
     addFood(){
       let newFood ={
         id: this.foods.length,
         name: this.newFood,
-        quantity: 1
+        calorieCount: this.caloriesPerFood[this.newFood] * this.newQuantity
       }
       this.shouldValidate = !this.newFood;
       if(!this.shouldValidate)
@@ -56,6 +63,10 @@ export default {
     }
   },
   computed:{
+    countCalories(){
+      this.foods.forEach(food => this.calorieCounter += food.calorieCount)
+      return this.calorieCounter;
+    },
     isValidated(){
       return !this.newFood && this.shouldValidate
     }
