@@ -13,7 +13,7 @@
     <view class="foodList" v-for="food in foods" :key="food.id">
       <text class="foodListItem">{{food.name}}</text>
       <text-input v-if="foods.length-1 === food.id" v-model="newQuantity" class="quantityInput"/>
-      <touchable-opacity :on-press="() => addQuantity(food.id)">
+      <touchable-opacity :on-press="() => addQuantity(food.id)" class="addQuantityButton">
         <text class="quantityButton">Add Quantity</text>
       </touchable-opacity>
     </view>
@@ -92,6 +92,9 @@ export default {
 </script>
 
 <style>
+.addQuantityButton{
+  margin-top: 20px;
+}
 .container {
   background-color: #252525;
   flex: 1;
@@ -116,6 +119,7 @@ export default {
   font-weight: 300;
 }
 .quantityInput{
+  margin-top: 20px;
   background-color: #252525;
   color: #AAAAAA;
   border-color: black;
