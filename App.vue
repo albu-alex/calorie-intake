@@ -12,7 +12,10 @@
     </touchable-opacity>
     <view class="foodList" v-for="food in foods" :key="food.id">
       <text class="foodListItem">{{food.name}}</text>
-      <text-input v-model="newQuantities[food.id]" class="quantityInput"/>
+      <text-input v-if="foods.length-1 === food.id" v-model="newQuantity" class="quantityInput"/>
+      <touchable-opacity :on-press="() => addQuantity(food.id)">
+        <text class="quantityButton">Add Quantity</text>
+      </touchable-opacity>
     </view>
     <text class="textColorPrimary" v-if="countCalories">You have eaten this many calories:{{calorieCounter}}</text>
     <touchable-opacity class="resetButton" :on-press="resetFoodList">
@@ -28,14 +31,20 @@ import Footer from "./components/Footer";
 export default {
   data(){
     return{
-      newQuantities : [],
+      newQuantity: "0",
       newFood: "",
       shouldValidate: false,
+      isEmpty: true,
       foods : [],
       calorieCounter : 0,
       caloriesPerFood:{
         "Chicken breast" : 1.64,
-        "Chocolate": 5
+        "Chocolate": 5,
+        "Yoghurt": 0.58,
+        "Milk": 0.42,
+        "Bread": 2.64,
+        "Rice": 1.3,
+        "Eggs": 1.55
       }
     }
   },
@@ -45,30 +54,34 @@ export default {
     Footer
   },
   methods: {
+    addQuantity(index){
+      this.foods[index].quantity = parseInt(this.newQuantity);
+    },
     resetFoodList(){
       this.foods = [];
-      this.newQuantities = [];
+      this.newQuantity = "0";
       this.calorieCounter = 0;
     },
     addFood(){
       let newFood ={
         id: this.foods.length,
-        name: this.newFood
+        name: this.newFood,
+        quantity: 0
       }
+      if(!(this.newFood in this.caloriesPerFood))
+        return;
       this.shouldValidate = !this.newFood;
-      if(!this.shouldValidate) {
+      if(!this.shouldValidate)
         this.foods.push(newFood);
-        this.newQuantities.push("1");
-      }
+      this.newQuantity = "0";
       this.newFood = '';
     }
   },
   computed:{
     countCalories(){
-      for(let i=0;i<this.newQuantities.length;i++){
-        let newCalorieCount = this.caloriesPerFood[this.foods[i].name] * this.newQuantities[i];
-        this.calorieCounter += newCalorieCount;
-      }
+      if(this.foods.length === 0)
+        return 0;
+      this.calorieCounter += this.foods[this.foods.length-1].quantity * this.caloriesPerFood[this.foods[this.foods.length-1].name];
       return this.calorieCounter;
     },
     isValidated(){
@@ -121,6 +134,12 @@ export default {
   top: 87%;
   width: 100%;
 }
+.quantityButton{
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+  color: #AAAAAA;
+}
 .buttonText{
   font-size: 18px;
   font-weight: 300;
@@ -135,6 +154,8 @@ export default {
   margin-left: 2%;
 }
 .foodList{
+  line-height: 50px;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
