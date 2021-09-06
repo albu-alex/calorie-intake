@@ -1,4 +1,4 @@
-## Are you a practical man? Do you want a simple app that does not waste your time and is straight to the point?
+## Are you a practical individual? Do you want a simple app that does not waste your time and is straight to the point?
 
 ## Then, Calorie Intake is for you!
 
@@ -12,7 +12,7 @@
 
 The app does not allow the user to add wrong input (strings that are not food items)
 
-<img alt="Wrong input example" src="https://github.com/albu-alex/calorie-intake/blob/main/assets/wrong-input-example.jpg" height=600px width=auto />
+<img alt="Wrong input example" style="align-self: center" src="https://github.com/albu-alex/calorie-intake/blob/main/assets/wrong-input-example.jpg" height=600px width=auto />
 
 ### This is where the user inputs the quantity of the food
 
